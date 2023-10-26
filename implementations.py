@@ -17,13 +17,33 @@ def compute_loss(y, tx, w):
     """
     # ***************************************************
     # TODO: compute loss by MSE
-
+    
     loss = (1/ 2) * np.mean((y-tx.dot(w))**2)
    
     return loss
 
     # ***************************************************
 
+
+def compute_loss_pred(y, y_pred):
+    """Calculate the loss using either MSE or MAE.
+
+    Args:
+        y: shape=(N, )
+        tx: shape=(N,2)
+        w: shape=(2,). The vector of model parameters.
+
+    Returns:
+        the value of the loss (a scalar), corresponding to the input parameters w.
+    """
+    # ***************************************************
+    # TODO: compute loss by MSE
+    
+    loss = (1/ 2) * np.mean((y-y_pred)**2)
+   
+    return loss
+
+    # ***************************************************
 
 
 def compute_gradient(y, tx, w):
@@ -78,12 +98,7 @@ def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
         
         # ***************************************************
         # store w and loss
-        
-        print(
-            "GD iter. {bi}/{ti}: loss={l}, w0={w0}, w1={w1}".format(
-                bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]
-            )
-        )
+   
     return w, loss
 
 
@@ -168,11 +183,6 @@ def mean_squared_error_sgd(y, tx, initial_w, batch_size, max_iters, gamma):
         
         # ***************************************************
 
-        print(
-            "SGD iter. {bi}/{ti}: loss={l}, w0={w0}, w1={w1}".format(
-                bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]
-            )
-        )
     return w, loss
 
 
@@ -346,7 +356,7 @@ def logistic_regression(y, tx, w, gamma):
     gradient = calculate_logistic_gradient(y, tx, w)
     w = w - gamma * gradient
     
-    return loss, w
+    return w, loss
 
 
 ## REGULARIZED LOGISTIC REGRESSION
@@ -379,8 +389,8 @@ def compute_reg_logistic_regression(y, tx, w, lambda_):
     # ***************************************************
     # INSERT YOUR CODE HERE
     # return loss, gradient: TODO
-    loss = calculate_loss(y, tx, w) + lambda_ * np.squeeze(w.T.dot(w) )
-    gradient = calculate_gradient(y, tx, w) +  2 * lambda_ * w 
+    loss = compute_loss(y, tx, w) + lambda_ * np.squeeze(w.T.dot(w) )
+    gradient = compute_gradient(y, tx, w) +  2 * lambda_ * w 
     return loss, gradient
     # ***************************************************
 
@@ -422,4 +432,4 @@ def reg_logistic_regression(y, tx, w, gamma, lambda_):
     # update w:
     w = w - gamma * gradient
     # ***************************************************
-    return loss, w
+    return w, loss
