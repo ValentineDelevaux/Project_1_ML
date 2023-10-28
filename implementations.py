@@ -24,9 +24,9 @@ def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
 
     w = initial_w
     for n_iter in range(max_iters):
-        loss =  compute_loss(y, tx, w)
         gradient = compute_gradient(y, tx, w)
         w = w - np.dot(gamma, gradient)
+        loss =  compute_loss(y, tx, w)
 
     return w, loss
 
@@ -126,9 +126,9 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
     """
     w = initial_w
     for step in range(max_iters):
-        loss = calculate_logistic_loss(y, tx, w)
         gradient = calculate_logistic_gradient(y, tx, w)
         w = w - gamma * gradient
+        loss = calculate_logistic_loss(y, tx, w)
     
     return w, loss
 
@@ -152,8 +152,9 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     """
     w = initial_w
     for step in range(max_iters):
-        loss, gradient = compute_reg_logistic_regression(y, tx, w, lambda_)
+        _, gradient = compute_reg_logistic_regression(y, tx, w, lambda_)
         w = w - gamma * gradient
+        loss, _ = compute_reg_logistic_regression(y, tx, w, lambda_)
 
     return w, loss
 
